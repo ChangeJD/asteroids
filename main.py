@@ -11,6 +11,7 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
     score = 0
+    lives = 3
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
@@ -42,9 +43,15 @@ def main():
         dt = clock.tick(60) / 1000
         for asteroid in asteroids:
             if arrow.collision(asteroid):
-                print("Game over!")
-                print(f"Final Score: {score}")
-                sys.exit()
+                lives -= 1
+                print(f"You lost a life! Lives remaining: {lives}")
+                if lives == 0:
+                    print("Game over!")
+                    print(f"Final Score: {score}")
+                    sys.exit()
+                else:
+                    for asteroid in asteroids:
+                        asteroid.kill()
             for shot in shots:
                 if asteroid.collision(shot):
                     asteroid.split()
